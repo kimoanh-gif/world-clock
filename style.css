@@ -1,62 +1,102 @@
 body{
+
 font-family:'Segoe UI',sans-serif;
 margin:0;
 text-align:center;
 
-background:linear-gradient(-45deg,#4facfe,#6c4ab6,#00c6ff,#764ba2);
-background-size:400% 400%;
-animation:gradientMove 12s ease infinite;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
 
 color:white;
-}
 
-@keyframes gradientMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
 }
 
 h1{
+
 margin-top:40px;
-font-size:40px;
+font-size:42px;
+
+}
+
+.mode-selector{
+
+display:flex;
+justify-content:center;
+gap:15px;
+
+margin-top:20px;
+margin-bottom:40px;
+
+}
+
+.mode-btn{
+
+padding:12px 25px;
+
+font-size:16px;
+border:none;
+
+border-radius:30px;
+
+cursor:pointer;
+
+background:rgba(255,255,255,0.2);
+color:white;
+
+transition:0.3s;
+
+}
+
+.mode-btn:hover{
+
+background:white;
+color:#2a5298;
+
+}
+
+.mode-btn.active{
+
+background:white;
+color:#2a5298;
+font-weight:bold;
+
 }
 
 .container{
-margin-top:50px;
 
 display:grid;
-grid-template-columns:repeat(3,300px);
+grid-template-columns:repeat(auto-fit,260px);
 justify-content:center;
 
 gap:40px;
+padding:20px;
+
 }
 
-.card{
+.clock-box{
+
 background:rgba(255,255,255,0.9);
 color:black;
 
-border-radius:25px;
-padding:30px;
+padding:25px;
+
+border-radius:20px;
 
 box-shadow:0 15px 30px rgba(0,0,0,0.3);
 
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-10px);
 }
 
 .time{
+
 font-size:26px;
 font-weight:bold;
-margin:15px 0;
+
+margin:10px 0;
+
 }
 
 canvas{
 
-width:120px;
-height:120px;
+margin-top:15px;
 
 background:white;
 

@@ -3,53 +3,302 @@
 <head>
 <meta charset="UTF-8">
 <title>World Clock</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: linear-gradient(135deg,#141E30,#243B55);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* TITLE */
+
+h1{
+    color:white;
+    margin-top:30px;
+    letter-spacing:2px;
+}
+
+/* OPTION BUTTONS */
+
+.controls{
+    margin:20px;
+}
+
+.controls button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.controls button:hover{
+    transform:scale(1.05);
+}
+
+.btn1{background:#3498db;color:white;}
+.btn2{background:#2ecc71;color:white;}
+.btn3{background:#e67e22;color:white;}
+
+
+/* GRID LAYOUT */
+
+.container{
+    width:90%;
+    max-width:1200px;
+
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:40px;
+
+    margin-bottom:50px;
+}
+
+
+/* CLOCK CARD */
+
+.clock-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    padding:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+    transition:0.3s;
+}
+
+.clock-card:hover{
+    transform:translateY(-8px);
+}
+
+
+/* CITY NAME */
+
+.city{
+    font-size:28px;
+    font-weight:bold;
+}
+
+
+/* DIGITAL TIME */
+
+.digital{
+    font-size:26px;
+    margin:15px 0;
+}
+
+
+/* ANALOG CLOCK */
+
+canvas{
+    background:#f4f4f4;
+    border-radius:50%;
+    display:block;
+    margin:0 auto;
+}
+</style>
 </head>
 
 <body>
 
 <h1>🌍 World Clock</h1>
 
+<div class="controls">
+
+<button class="btn1" onclick="setMode('both')">Both</button>
+<button class="btn2" onclick="setMode('analog')">Analog</button>
+<button class="btn3" onclick="setMode('digital')">Digital</button>
+
+</div>
+
+
 <div class="container">
 
-<div class="card">
-<h3>VN Hanoi, Vietnam</h3>
-<div class="time" id="hanoi"></div>
-<canvas id="clock-hanoi" width="120" height="120"></canvas>
+<div class="clock-card">
+<div class="city">VN Hanoi</div>
+<div class="digital" id="d1"></div>
+<canvas id="c1" width="200" height="200"></canvas>
 </div>
 
-<div class="card">
-<h3>MM Yangon, Myanmar</h3>
-<div class="time" id="yangon"></div>
-<canvas id="clock-yangon" width="120" height="120"></canvas>
+<div class="clock-card">
+<div class="city">MM Yangon</div>
+<div class="digital" id="d2"></div>
+<canvas id="c2" width="200" height="200"></canvas>
 </div>
 
-<div class="card">
-<h3>KR Seoul, Korea</h3>
-<div class="time" id="seoul"></div>
-<canvas id="clock-seoul" width="120" height="120"></canvas>
+<div class="clock-card">
+<div class="city">KR Seoul</div>
+<div class="digital" id="d3"></div>
+<canvas id="c3" width="200" height="200"></canvas>
 </div>
 
-<div class="card">
-<h3>JP Tokyo, Japan</h3>
-<div class="time" id="tokyo"></div>
-<canvas id="clock-tokyo" width="120" height="120"></canvas>
+<div class="clock-card">
+<div class="city">JP Tokyo</div>
+<div class="digital" id="d4"></div>
+<canvas id="c4" width="200" height="200"></canvas>
 </div>
 
-<div class="card">
-<h3>SG Singapore</h3>
-<div class="time" id="singapore"></div>
-<canvas id="clock-singapore" width="120" height="120"></canvas>
+<div class="clock-card">
+<div class="city">US New York</div>
+<div class="digital" id="d5"></div>
+<canvas id="c5" width="200" height="200"></canvas>
 </div>
 
-<div class="card">
-<h3>MY Kuala Lumpur</h3>
-<div class="time" id="kl"></div>
-<canvas id="clock-kl" width="120" height="120"></canvas>
+<div class="clock-card">
+<div class="city">UK London</div>
+<div class="digital" id="d6"></div>
+<canvas id="c6" width="200" height="200"></canvas>
 </div>
 
 </div>
 
-<script src="script/script.js"></script>
+
+<script>
+
+let mode="both";
+
+function setMode(m){
+
+mode=m;
+
+let digital=document.querySelectorAll(".digital");
+let canvas=document.querySelectorAll("canvas");
+
+digital.forEach(d=>d.style.display=(mode=="analog")?"none":"block");
+canvas.forEach(c=>c.style.display=(mode=="digital")?"none":"block");
+
+}
+
+
+
+function drawClock(canvas, date){
+
+let ctx=canvas.getContext("2d");
+let r=canvas.height/2;
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.save();
+ctx.translate(r,r);
+
+/* CLOCK FACE */
+
+ctx.beginPath();
+ctx.arc(0,0,r-5,0,Math.PI*2);
+ctx.fillStyle="white";
+ctx.fill();
+
+ctx.strokeStyle="#333";
+ctx.lineWidth=5;
+ctx.stroke();
+
+/* NUMBERS */
+
+ctx.font="16px Arial";
+ctx.textAlign="center";
+ctx.textBaseline="middle";
+
+for(let num=1;num<=12;num++){
+
+let ang=num*Math.PI/6;
+
+ctx.rotate(ang);
+ctx.translate(0,-r+25);
+ctx.rotate(-ang);
+
+ctx.fillText(num.toString(),0,0);
+
+ctx.rotate(ang);
+ctx.translate(0,r-25);
+ctx.rotate(-ang);
+
+}
+
+/* TIME */
+
+let hour=date.getHours();
+let minute=date.getMinutes();
+let second=date.getSeconds();
+
+hour=hour%12;
+
+hour=(hour*Math.PI/6)+(minute*Math.PI/(6*60));
+
+drawHand(ctx,hour,r*0.5,6);
+
+minute=(minute*Math.PI/30);
+
+drawHand(ctx,minute,r*0.7,4);
+
+second=(second*Math.PI/30);
+
+drawHand(ctx,second,r*0.8,2,"red");
+
+ctx.restore();
+
+}
+
+function drawHand(ctx,pos,length,width,color="black"){
+
+ctx.beginPath();
+ctx.lineWidth=width;
+ctx.lineCap="round";
+ctx.strokeStyle=color;
+
+ctx.moveTo(0,0);
+ctx.rotate(pos);
+ctx.lineTo(0,-length);
+ctx.stroke();
+ctx.rotate(-pos);
+
+}
+
+
+
+function update(){
+
+let zones=[
+
+"Asia/Bangkok",
+"Asia/Yangon",
+"Asia/Seoul",
+"Asia/Tokyo",
+"America/New_York",
+"Europe/London"
+
+];
+
+zones.forEach((z,i)=>{
+
+let date=new Date().toLocaleString("en-US",{timeZone:z});
+date=new Date(date);
+
+document.getElementById("d"+(i+1)).innerHTML=date.toLocaleTimeString();
+
+drawClock(document.getElementById("c"+(i+1)),date);
+
+});
+
+}
+
+setInterval(update,1000);
+update();
+
+</script>
+
 </body>
 </html>
